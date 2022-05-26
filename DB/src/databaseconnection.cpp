@@ -9,18 +9,18 @@ public:
     void operator()(QSqlDatabase* db){
 
         db->close();
-    QSqlDatabase::removeDatabase(QSqlDatabase::defaultConnection);
-    delete db;
-     qDebug()<<"DB Close";
+        QSqlDatabase::removeDatabase(QSqlDatabase::defaultConnection);
+        delete db;
+        qDebug()<<"DB Close";
     }
 
 };
 
 class DataBaseConnection::privateData
 {
-    public:
-std::unique_ptr<QSqlDatabase,Closer> m_database;
-QString m_dbPath;
+public:
+    std::unique_ptr<QSqlDatabase,Closer> m_database;
+    QString m_dbPath;
     void setUp();
     void setUpWorkspace();
     void setupTables();
@@ -29,13 +29,11 @@ QString m_dbPath;
 void DataBaseConnection::privateData::setUp()
 {
     QString driver("QSQLITE");
-
-setUpWorkspace();
-
-auto *db = new QSqlDatabase(QSqlDatabase::addDatabase(driver));
-m_database.reset(db);
-m_database->setDatabaseName("LenDB");
-m_database->open();
+    setUpWorkspace();
+    auto *db = new QSqlDatabase(QSqlDatabase::addDatabase(driver));
+    m_database.reset(db);
+    m_database->setDatabaseName("LenDB");
+    m_database->open();
     setupTables();
 }
 
@@ -46,7 +44,7 @@ void DataBaseConnection::privateData::setUpWorkspace()
     const QString location {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)};
     const QString fullPath {location + "/" + databaseName};
 
-     m_dbPath = fullPath;
+    m_dbPath = fullPath;
 }
 
 void DataBaseConnection::privateData::setupTables()
@@ -62,12 +60,7 @@ void DataBaseConnection::privateData::setupTables()
     };
     for (auto& query : creationQueries)
     {
-        if (!query.exec())
-        { qDebug()<<"dsd2s";}
-        else
-        {
-            qDebug() << "Table successfully created! Query: \n" << query.lastQuery();
-        }
+        query.exec();
     }
     QVector<QSqlQuery> creationQueriesData= {
         QSqlQuery {
@@ -83,22 +76,17 @@ void DataBaseConnection::privateData::setupTables()
     };
     for (auto& query : creationQueriesData)
     {
-        if (!query.exec())
-        { qDebug()<<"d1sds";}
-        else
-        {
-            qDebug() << "Table successfully created! Query: \n" << query.lastQuery();
-        }
-    }
+        query.exec();
 
+    }
+    qDebug() << "Open DB";
 }
 
 DataBaseConnection& DataBaseConnection::instance()
 {
     static DataBaseConnection instance{};
-   return instance;
+    return instance;
 }
-
 
 DataBaseConnection::DataBaseConnection():m_d{new privateData}
 
@@ -107,8 +95,6 @@ DataBaseConnection::DataBaseConnection():m_d{new privateData}
 }
 
 DataBaseConnection::~DataBaseConnection()
-{
-
-}
+{}
 
 

@@ -7,7 +7,6 @@ Manipulator::Manipulator(){}
 void Manipulator::insert(const QString & tableName, const QVariantList & data)
 {
     QString query {generateQuery(tableName, data.size())};
-    qDebug()<<query;
     m_executor.execute(query, data);
 }
 
@@ -20,7 +19,7 @@ QString Manipulator::binding( int paramCount){
         str.push_back(",");
     }
     str.pop_back();
-    for (int i = 0;i<=paramCount;++i){
+    for (int i = 0;i<(paramCount*2-1);++i){
         bindValue +=str.at(i);
     }
     return bindValue;

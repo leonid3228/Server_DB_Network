@@ -17,7 +17,5 @@ public:
                      const QString & name, const QString & surName, const QString & info);
     void handlePackage(Package&);
     QVariantList getDataFromDB(QString);
-private slots:
-
 };
 

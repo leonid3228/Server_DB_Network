@@ -36,7 +36,6 @@ void Connection::handlePackage(Package &package, QTcpSocket *socket)
     switch (package.pckg()) {
 
     case PckgType::REQUEST_LOGIN:{
-
         bool check = dbClass.checkLogin(package.data());
         QVariantList data;
         data.push_back(check);
@@ -48,9 +47,9 @@ void Connection::handlePackage(Package &package, QTcpSocket *socket)
             Package packageRequest(data,PckgType::REQUEST_DATA);
             socket->write(packageRequest.rawData());
         }
-        break;}
+        break;
+    }
     case PckgType::REQUEST_REGISTER:{
-
         QString log = package.data().at(0).toString();
         QString pass = package.data().at(1).toString();
         QString name = package.data().at(2).toString();
