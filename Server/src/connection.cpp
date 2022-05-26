@@ -59,10 +59,11 @@ void Connection::handlePackage(Package &package, QTcpSocket *socket)
 
         dbClass.getRegister(log,pass,name,surName,info);
         bool ok = true;
-         QVariantList data;data.push_back(ok);
-                Package packageRequest(data,PckgType::REQUEST_REGISTER_OK);
-                socket->write(packageRequest.rawData());
-        break;}
+        QVariantList data;data.push_back(ok);
+        Package packageRequest(data,PckgType::REQUEST_REGISTER_OK);
+        socket->write(packageRequest.rawData());
+        break;
+    }
     }
 }
 
